@@ -1,0 +1,19 @@
+# Use OpenJDK 11 as the base image
+FROM openjdk:11-jre-slim
+
+# Install necessary packages (unzip, vim, telnet, mysql-client)
+RUN apt-get update && \
+    apt-get install -y unzip vim telnet mysql-client && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set volume for temporary files
+VOLUME /tmp
+
+# Copy the WAR file to the container
+COPY dptweb-1.0.war /app.war
+
+# Expose the port Tomcat will run on
+EXPOSE 8080
+
+# Run the application using the JAR command
+ENTRYPOINT ["java", "-jar", "/app.war"]
